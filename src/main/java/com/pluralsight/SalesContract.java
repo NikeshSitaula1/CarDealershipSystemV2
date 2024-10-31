@@ -36,7 +36,6 @@ public class SalesContract extends Contract {
         else {
             return 295;
         }
-
     }
 
     public boolean isFinance() {
