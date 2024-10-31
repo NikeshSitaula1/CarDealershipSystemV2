@@ -8,10 +8,8 @@ public class SalesContract extends Contract {
     private boolean finance;
 
 
-
-
     public SalesContract(String dateOfContract, String customerName, String customerEmail,
-                         String vehicleSold, String totalPrice, String monthlyPayment,
+                         Vehicle vehicleSold, double totalPrice, double monthlyPayment,
                          double salesTaxAmount, double recordingFee, double processingFee,
                          boolean finance) {
         super(dateOfContract, customerName, customerEmail, vehicleSold, totalPrice, monthlyPayment);
@@ -21,12 +19,24 @@ public class SalesContract extends Contract {
         this.finance = finance;
     }
 
-    public double getProcessingFee() {
-        return processingFee;
+    public double getSalesTaxAmount() {
+        return salesTaxAmount;
     }
 
-    public void setProcessingFee(double processingFee) {
-        this.processingFee = processingFee;
+    public double getRecordingFee() {
+        return recordingFee;
+    }
+
+    public double getProcessingFee() {
+        Vehicle vehicle = super.getVehicleSold();
+
+        if (vehicle.getPrice() > 10000){
+            return 495;
+        }
+        else {
+            return 295;
+        }
+
     }
 
     public boolean isFinance() {
@@ -39,11 +49,37 @@ public class SalesContract extends Contract {
 
     @Override
     public double getTotalPrice(){
-        return 0;
+
+        Vehicle vehicle = super.getVehicleSold();
+        double basePrice = vehicle.getPrice();
+        double salesTax = basePrice * salesTaxAmount;
+
+        return basePrice + salesTax + this.recordingFee + getProcessingFee();
     }
 
     @Override
     public double getMonthlyPayment(){
-        return 0;
+
+        Vehicle vehicle = super.getVehicleSold();
+        double basePrice = vehicle.getPrice();
+        double totalPrice = getTotalPrice();
+
+        double loanRate;
+        int loanMonth;
+
+        if(finance){
+            if(basePrice >= 10000) {
+                loanRate = 0.0425;
+                loanMonth = 48;
+            }
+            else {
+                loanRate = 0.0525;
+                loanMonth = 24;
+            }
+            double monthlyRate = loanRate / 12;
+
+            return (totalPrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, - loanMonth));
+        }
+        return basePrice;
     }
 }
