@@ -1,4 +1,6 @@
-package com.pluralsight;
+package com.pluralsight.contract;
+
+import com.pluralsight.Vehicle;
 
 public abstract class Contract {
 

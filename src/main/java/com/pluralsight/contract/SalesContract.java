@@ -1,4 +1,6 @@
-package com.pluralsight;
+package com.pluralsight.contract;
+
+import com.pluralsight.Vehicle;
 
 public class SalesContract extends Contract {
 
@@ -63,21 +65,21 @@ public class SalesContract extends Contract {
         double basePrice = vehicle.getPrice();
         double totalPrice = getTotalPrice();
 
-        double loanRate;
-        int loanMonth;
+        double loanMonthlyRate;
+        int loanMonthlyTerm;
 
         if(finance){
             if(basePrice >= 10000) {
-                loanRate = 0.0425;
-                loanMonth = 48;
+                loanMonthlyRate = 0.0425;
+                loanMonthlyTerm = 48;
             }
             else {
-                loanRate = 0.0525;
-                loanMonth = 24;
+                loanMonthlyRate = 0.0525;
+                loanMonthlyTerm = 24;
             }
-            double monthlyRate = loanRate / 12;
+            double monthlyRate = loanMonthlyRate / 12;
 
-            return (totalPrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, - loanMonth));
+            return (totalPrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, - loanMonthlyTerm));
         }
         return basePrice;
     }
