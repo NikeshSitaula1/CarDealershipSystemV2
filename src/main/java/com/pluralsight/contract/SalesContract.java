@@ -14,7 +14,7 @@ public class SalesContract extends Contract {
                          Vehicle vehicleSold, double totalPrice, double monthlyPayment,
                          double salesTaxAmount, double recordingFee, double processingFee,
                          boolean finance) {
-        super(dateOfContract, customerName, customerEmail, vehicleSold, totalPrice, monthlyPayment);
+        super(dateOfContract, customerName, customerEmail, vehicleSold);
         this.salesTaxAmount = 0.05;
         this.recordingFee = 100;
         this.processingFee = processingFee;
