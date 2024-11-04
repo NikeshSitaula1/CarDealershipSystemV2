@@ -13,13 +13,12 @@ public abstract class Contract {
     private double monthlyPayment;
 
     public Contract(String dateOfContract, String customerName, String customerEmail,
-                    Vehicle vehicleSold, double totalPrice, double monthlyPayment) {
+                    Vehicle vehicleSold) {
         this.dateOfContract = dateOfContract;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
-        this.totalPrice = totalPrice;
-        this.monthlyPayment = monthlyPayment;
+
     }
 
     public Contract(){}

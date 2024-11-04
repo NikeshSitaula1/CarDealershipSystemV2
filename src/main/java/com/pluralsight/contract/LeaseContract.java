@@ -45,7 +45,7 @@ public class LeaseContract extends Contract {
 
         double leaseMonthlyRate = leaseRate /12;
 
-        return (totalPrice * leaseMonthlyRate) / (1 - Math.pow(1 + leaseMonthlyTerm, - leaseMonthlyTerm));
+        return (totalPrice * leaseMonthlyRate) / (1 - Math.pow(1 + leaseMonthlyRate, - leaseMonthlyTerm));
 
     }
 }

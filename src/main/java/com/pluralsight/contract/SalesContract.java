@@ -21,6 +21,8 @@ public class SalesContract extends Contract {
         this.finance = finance;
     }
 
+    public SalesContract(){}
+
     public double getSalesTaxAmount() {
         return salesTaxAmount;
     }
