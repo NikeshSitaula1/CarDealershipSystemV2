@@ -39,9 +39,9 @@ public class ContractFileManager {
                 Vehicle vehicleSold = new Vehicle(vin,year,make,model,vehicleType,color,odometer,price);
 
 
-                if token sales list
-                        print token [0] as sale
-                contract = new Contract(dateOfContract, customerName, customerEmail, vehicleSold);
+//                if token sales list
+//                        print token [0] as sale
+//                contract = new Contract(dateOfContract, customerName, customerEmail, vehicleSold);
 
             }
             //br.readLine(); //Skips line by line
