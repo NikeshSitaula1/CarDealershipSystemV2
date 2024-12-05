@@ -1,3 +1,4 @@
+
 package com.pluralsight.contract;
 
 import com.pluralsight.Vehicle;

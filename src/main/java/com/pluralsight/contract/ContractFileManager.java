@@ -1,3 +1,4 @@
+
 package com.pluralsight.contract;
 
 import com.pluralsight.Vehicle;
@@ -90,4 +91,3 @@ public class ContractFileManager {
         return results;
     }
 }
-

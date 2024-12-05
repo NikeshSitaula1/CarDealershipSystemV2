@@ -1,3 +1,4 @@
+
 package com.pluralsight;
 
 import com.pluralsight.contract.Contract;
