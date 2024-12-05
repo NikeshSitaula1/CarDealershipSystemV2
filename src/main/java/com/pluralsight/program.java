@@ -9,18 +9,20 @@ public class program {
 
     public static void main(String[] args) throws SQLException {
 
-        DealershipDataManager dm = null;
-        try{
-            BasicDataSource dataSource = getConfiguredDataSource(args);
+        DealershipDataManager dm;
+        try (
+                BasicDataSource dataSource = getConfiguredDataSource(args);
+                ){
             dm = new DealershipDataManager(dataSource);
+            UserInterface ui = new UserInterface(dm);
+            ui.display();
+
         }catch (Exception e){
             System.out.println("main");
             e.printStackTrace();
         }
-
-        UserInterface ui = new UserInterface(dm);
-        ui.display();
     }
+
 
     public static BasicDataSource getConfiguredDataSource(String[] args){
         String username = args[0];

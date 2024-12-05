@@ -5,13 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92c92a78-67bf-4ee6-bfaa-736aaccc4556" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pluralsight/DealershipDataManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pluralsight/contracts/ContractDataManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pluralsight/Dealership.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pluralsight/Dealership.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pluralsight/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pluralsight/UserInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pluralsight/contracts/SalesContract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pluralsight/contracts/SalesContract.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pluralsight/program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pluralsight/program.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
