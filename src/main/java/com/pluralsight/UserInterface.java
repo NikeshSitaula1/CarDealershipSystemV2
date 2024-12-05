@@ -2,20 +2,19 @@ package com.pluralsight;
 
 import com.pluralsight.contracts.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserInterface {
 
-    public static String filename_dealership = "inventory.csv";
-    public static String filename_contracts = "contracts.csv";
-    public Dealership currentDealership;
+    public int currentDealershipID;
     public ArrayList<Contract> contracts;
+    public DealershipDataManager dm;
 
-    public UserInterface(){
-        currentDealership = DealershipFileManager.getFromCSV(filename_dealership);
-        contracts = ContractFileManager.getFromCSV(filename_contracts);
+    public UserInterface(DealershipDataManager dm){
+        this.dm = dm;
+
     }
-
 
     public void display(){
 
@@ -40,25 +39,28 @@ public class UserInterface {
 
         // User Interface Loop
         do {
-            System.out.println("Welcome to " + currentDealership.getName() + "!");
+
+            System.out.println("Welcome to " +   "!");
             selection = Console.PromptForInt(options);
             switch (selection) {
-                case 1 -> processGetByPriceRequest();
-                case 2 -> processGetByMakeModelRequest();
-                case 3 -> processGetByYearRequest();
-                case 4 -> processGetByColorRequest();
-                case 5 -> processGetByMileageRequest();
-                case 6 -> processGetByVehicleTypeRequest();
+                //case 1 -> processGetByPriceRequest();
+                //case 2 -> processGetByMakeModelRequest();
+                //case 3 -> processGetByYearRequest();
+                //case 4 -> processGetByColorRequest();
+                //case 5 -> processGetByMileageRequest();
+                //case 6 -> processGetByVehicleTypeRequest();
                 case 7 -> processGetAllVehiclesRequest();
-                case 8 -> processAddVehicleRequest();
-                case 9 -> processRemoveVehicleRequest();
-                case 10 -> processSellOrLeaseRequest();
+                //case 8 -> processAddVehicleRequest();
+                //case 9 -> processRemoveVehicleRequest();
+                //case 10 -> processSellOrLeaseRequest();
                 case 11 -> processDisplayContractsRequest();
                 case 99 -> System.exit(0);
                 default -> System.out.println("Invalid selection. Please try again.");
             }
         } while (selection != 99);
     }
+
+    /*
 
     private void processRemoveVehicleRequest() {
     }
@@ -104,13 +106,18 @@ public class UserInterface {
         }
     }
 
+     */
 
-    public void processGetAllVehiclesRequest(){
-        for(Vehicle v : currentDealership.getInventory()){
+
+    public void processGetAllVehiclesRequest() {
+        currentDealershipID = Console.PromptForInt("Enter the dealership: ");
+        ArrayList<Vehicle> vehiclesAll = dm.getVehiclesAll(currentDealershipID);
+
+        for(Vehicle v : vehiclesAll){
             displayVehicle(v);
         }
     }
-
+    /*
     public void processSellOrLeaseRequest(){
         int vin = 0;
         String input;
@@ -218,6 +225,8 @@ public class UserInterface {
 
 
     }
+
+     */
 
 
     public void processDisplayContractsRequest(){

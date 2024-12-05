@@ -99,7 +99,6 @@ public class SalesContract extends com.pluralsight.contracts.Contract {
         else{
             return 0; //no financing, no monthly payment.
         }
-
     }
 
     @Override
@@ -122,5 +121,4 @@ public class SalesContract extends com.pluralsight.contracts.Contract {
                 this.getMonthlyPayment();
 
     }
-
 }
