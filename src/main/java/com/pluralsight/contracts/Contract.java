@@ -1,33 +1,27 @@
+package com.pluralsight.contracts;
 
-package com.pluralsight.contract;
-
+import com.pluralsight.ITextEncodable;
 import com.pluralsight.Vehicle;
 
-public abstract class Contract {
+public abstract class Contract implements ITextEncodable {
+    private String date;            // Date of the contract
+    private String customerName;     // Name of the customer
+    private String customerEmail;    // Email of the customer
+    private Vehicle vehicleSold;      // Vehicle sold
 
-
-    private String dateOfContract;
-    private String customerName;
-    private String customerEmail;
-    private Vehicle vehicleSold;
-
-
-    public Contract(String dateOfContract, String customerName, String customerEmail,
-                    Vehicle vehicleSold) {
-        this.dateOfContract = dateOfContract;
+    public Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
+        this.date = date;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
     }
 
-    public Contract(){}
-
-    public String getDateOfContract() {
-        return dateOfContract;
+    public String getDate() {
+        return date;
     }
 
-    public void setDateOfContract(String dateOfContract) {
-        this.dateOfContract = dateOfContract;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getCustomerName() {
@@ -57,4 +51,6 @@ public abstract class Contract {
     public abstract double getTotalPrice();
 
     public abstract double getMonthlyPayment();
+
+
 }

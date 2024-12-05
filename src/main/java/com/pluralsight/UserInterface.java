@@ -1,69 +1,70 @@
-
 package com.pluralsight;
 
-import com.pluralsight.contract.Contract;
-import com.pluralsight.contract.LeaseContract;
-import com.pluralsight.contract.SalesContract;
+import com.pluralsight.contracts.*;
+
+import java.util.ArrayList;
 
 public class UserInterface {
 
-    public static String file_dealership = "inventory.csv";
-    public static  String  file_contracts = "contracts.csv";
-    static Dealership deal;
-
+    public static String filename_dealership = "inventory.csv";
+    public static String filename_contracts = "contracts.csv";
+    public Dealership currentDealership;
+    public ArrayList<Contract> contracts;
 
     public UserInterface(){
-        deal = DealershipFileManager.getDealership();
+        currentDealership = DealershipFileManager.getFromCSV(filename_dealership);
+        contracts = ContractFileManager.getFromCSV(filename_contracts);
+    }
 
+
+    public void display(){
+
+        String options = """
+                Please select from the following choices:
+                1 - Find vehicles within a price range
+                2 - Find vehicles by make / model
+                3 - Find vehicles by year range
+                4 - Find vehicles by color
+                5 - Find vehicles by mileage range
+                6 - Find vehicles by type (car, truck, SUV, van)
+                7 - List ALL vehicles
+                8 - Add a vehicle
+                9 - Remove a vehicle
+                10 - Sell or Lease vehicle
+                11 - Display Contracts
+                99 - Quit
+
+                >>>\s""";
+
+        int selection;
+
+        // User Interface Loop
         do {
-            try {
-                System.out.println("-----------------Welcome to Car Dealership-------------------");
-                System.out.println("1. [Display] all vehicles");
-                System.out.println("2. [Add] a vehicle");
-                System.out.println("3. [Remove] a vehicle");
-                System.out.println("4. Filter by Price [Range]");
-                System.out.println("5. Sale or Lease");
-                System.out.println("0. [Exit]");
-                System.out.print(">> ");
-
-                String option = Console.PromptForString();
-
-                if (option.equals("1")) {
-                    displayAll();
-                }
-                else if (option.equals("2")) {
-                    addVehicle();
-                }
-                else if (option.equals("3")) {
-                    removeVehicle();
-                }
-                else if (option.equals("4")){
-                    byPrice();
-                }
-                else if (option.equals("5")){
-
-                }
-                else if (option.equals("0")){
-                    return;
-                }
-                else {
-                    System.out.println("Invalid entry");
-                }
-            } catch (Exception e){
-                System.out.println("Invalid entry");
+            System.out.println("Welcome to " + currentDealership.getName() + "!");
+            selection = Console.PromptForInt(options);
+            switch (selection) {
+                case 1 -> processGetByPriceRequest();
+                case 2 -> processGetByMakeModelRequest();
+                case 3 -> processGetByYearRequest();
+                case 4 -> processGetByColorRequest();
+                case 5 -> processGetByMileageRequest();
+                case 6 -> processGetByVehicleTypeRequest();
+                case 7 -> processGetAllVehiclesRequest();
+                case 8 -> processAddVehicleRequest();
+                case 9 -> processRemoveVehicleRequest();
+                case 10 -> processSellOrLeaseRequest();
+                case 11 -> processDisplayContractsRequest();
+                case 99 -> System.exit(0);
+                default -> System.out.println("Invalid selection. Please try again.");
             }
-        }while (true);
+        } while (selection != 99);
     }
 
-    public void displayAll(){
-        for(Vehicle vehicle : deal.getAllVehicles()){
-            System.out.println(vehicle);
-        }
+    private void processRemoveVehicleRequest() {
     }
 
-
-    public void addVehicle(){
-        //get values from the user...
+    private void processAddVehicleRequest() {
+        //get lots of values from the user...
         int vin = Console.PromptForInt("Enter Vin: ");
         int year = Console.PromptForInt("Enter year: ");
         String make = Console.PromptForString("Enter make: ");
@@ -73,37 +74,44 @@ public class UserInterface {
         int odometer = Console.PromptForInt("Enter odometer: ");
         double price = Console.PromptForDouble("Enter price: ");
 
-        //create an instance of a Vehicle class from those values...
         Vehicle v = new Vehicle(vin,year, make, model, vehicleType, color, odometer, price);
 
-        //call the dealerships addVehicle method, passing it the vehicle you just created.
-        deal.addVehicle(v);
-        DealershipFileManager.saveDealership(deal);
+        currentDealership.addVehicleToInventory(v);
+        DealershipFileManager.saveToCSV(currentDealership, filename_dealership);
+
     }
 
-
-    public void removeVehicle(){
-        int vin = Console.PromptForInt("Enter vin: ");
-
-        for(Vehicle vehicle : deal.getAllVehicles()){
-            if(vin == vehicle.getVin() ){
-                deal.removeVehicle(vehicle);
-                DealershipFileManager.saveDealership(deal);
-                break;
-            }
-        }
+    private void processGetByVehicleTypeRequest() {
     }
 
-    public void byPrice(){
+    private void processGetByMileageRequest() {
+    }
+
+    private void processGetByColorRequest() {
+    }
+
+    private void processGetByYearRequest() {
+    }
+
+    private void processGetByMakeModelRequest() {
+    }
+
+    private void processGetByPriceRequest() {
         double min = Console.PromptForDouble("Enter min: ");
         double max = Console.PromptForDouble("Enter max: ");
-
-        for (Vehicle vehicle : deal.getVehicleByPrice(min, max)){
-            System.out.println(vehicle);
+        for(Vehicle v : currentDealership.getVehiclesByPrice(min, max)){
+            displayVehicle(v);
         }
     }
 
-    public void sellOrLease(){
+
+    public void processGetAllVehiclesRequest(){
+        for(Vehicle v : currentDealership.getInventory()){
+            displayVehicle(v);
+        }
+    }
+
+    public void processSellOrLeaseRequest(){
         int vin = 0;
         String input;
         // Get all the info we need from the user
@@ -112,7 +120,7 @@ public class UserInterface {
             input = Console.PromptForString("Enter VIN of the vehicle to sell/lease (or 'v' to view all vehicles or 'q' to cancel): ");
             if (input.equalsIgnoreCase("q")) return;
             if (input.equalsIgnoreCase("v")) {
-                displayAll();
+                processGetAllVehiclesRequest();
                 input = "";
                 continue;
             }
@@ -120,7 +128,7 @@ public class UserInterface {
             try {
                 vin = Integer.parseInt(input);
 
-                Vehicle vehicleToSell = deal.getVehicleByVIN(vin);
+                Vehicle vehicleToSell = currentDealership.getVehicleByVIN(vin);
                 if (vehicleToSell == null) {
                     System.out.println("Vehicle not found. Please try again.");
                     input = ""; // Reset input
@@ -134,7 +142,7 @@ public class UserInterface {
         } while (input.isEmpty());
 
         System.out.println(vin);
-        System.out.println(deal.getVehicleByVIN(vin));
+        System.out.println(currentDealership.getVehicleByVIN(vin));
         //at this point we should have a vin...
 
 
@@ -148,6 +156,8 @@ public class UserInterface {
                 contractType = ""; // Reset input
             }
         } while (contractType.isEmpty());
+
+
 
         // Get customer name
         String customerName;
@@ -177,7 +187,7 @@ public class UserInterface {
             }
         } while (date.isEmpty());
 
-        Vehicle vehicle = deal.getVehicleByVIN(vin);
+        Vehicle vehicle = currentDealership.getVehicleByVIN(vin);
 
         Contract contract = null;
 
@@ -198,15 +208,31 @@ public class UserInterface {
                 System.out.println("Please enter 'yes' or 'no'.");
             } while (true);
 
-            contract = new SalesContract(date, customerName, customerEmail, vehicle);
+            contract = new SalesContract(date, customerName, customerEmail, vehicle, isFinanced);
         } else {
-            contract = new LeaseContract(date,customerName,customerEmail,vehicle);
+            contract = new LeaseContract(date, customerName, customerEmail, vehicle);
         }
 
-        System.out.println(contract);
-        assert contract != null;
-        System.out.println(contract.getTotalPrice());
-        System.out.println(contract.getMonthlyPayment());
+        contracts.add(contract);
+        ContractFileManager.appendToCSV(contract, filename_contracts);
+
 
     }
+
+
+    public void processDisplayContractsRequest(){
+        displayContracts(contracts);
+    }
+
+    public void displayVehicle(Vehicle v){
+        System.out.println(v);
+    }
+
+    public void displayContracts(ArrayList<Contract> contracts){
+        for(Contract c : contracts){
+            System.out.println(c);
+        }
+    }
+
+
 }

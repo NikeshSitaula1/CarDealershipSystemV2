@@ -1,11 +1,8 @@
-
 package com.pluralsight;
 
 import java.util.regex.Pattern;
 
-
-public class Vehicle {
-
+public class Vehicle implements ITextEncodable {
     private int vin;
     private int year;
     private String make;
@@ -14,8 +11,6 @@ public class Vehicle {
     private String color;
     private int odometer;
     private double price;
-
-    public Vehicle(){};
 
     public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
         this.vin = vin;
@@ -28,93 +23,87 @@ public class Vehicle {
         this.price = price;
     }
 
-    public Vehicle(String dataString){
-        String [] tokens = dataString.split(Pattern.quote("|"));
-        this.vin = Integer.parseInt(tokens[0]);
-        this.year = Integer.parseInt(tokens[1]);
-        this.make = tokens[2];
-        this.model = tokens[3];
-        this.vehicleType = tokens[4];
-        this.color = tokens[5];
-        this.odometer = Integer.parseInt(tokens[6]);
-        this.price = Double.parseDouble(tokens[7]);
+    public Vehicle(String encodedData){
+        String[] data = encodedData.split(Pattern.quote("|"));
+        int vin = Integer.parseInt(data[0]);
+        int year = Integer.parseInt(data[1]);
+        String make = data[2];
+        String model = data[3];
+        String vehicleType = data[4];
+        String color = data[5];
+        int odometer = Integer.parseInt(data[6]);
+        double price = Double.parseDouble(data[7]);
+        this.vin = vin;
+        this.year = year;
+        this.make = make;
+        this.model = model;
+        this.vehicleType = vehicleType;
+        this.color = color;
+        this.odometer = odometer;
+        this.price = price;
     }
-
+    // Getters for all fields
     public int getVin() {
         return vin;
-    }
-
-    public void setVin(int vin) {
-        this.vin = vin;
     }
 
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getMake() { //brand like toyota
+    public String getMake() {
         return make;
     }
 
-    public void setMake(String make) {
-        this.make = make;
-    }
-
-    public String getModel() { //toyota model
+    public String getModel() {
         return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 
     public String getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
-    }
-
     public String getColor() {
         return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public int getOdometer() {
         return odometer;
     }
 
-    public void setOdometer(int odometer) {
-        this.odometer = odometer;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    @Override
+    public String toString(){
+        String colorString;
+        if (color.equalsIgnoreCase("Red")){
+            colorString = ColorCodes.RED + color + ColorCodes.RESET;
+        }
+        else if (color.equalsIgnoreCase("White")){
+            colorString = ColorCodes.WHITE + color + ColorCodes.RESET;
+        }
+        else if (color.equalsIgnoreCase("Blue")){
+            colorString = ColorCodes.BLUE + color + ColorCodes.RESET;
+        }
+
+        else{
+            colorString = color;
+        }
+        return (this.getYear() + " " + this.getMake() + " " + this.getModel() + " [" + colorString + "]" + "VIN: " + this.getVin());
     }
 
     @Override
-    public String toString(){
-        return "Vehicle{" +
-                "vin=" + vin +
-                ", year=" + year  +
-                ", make='" + make + '\'' +
-                ", model='" + model + '\'' +
-                ", vehicleType=" + vehicleType + '\'' +
-                ", color=" + color + '\'' +
-                ", odometer=" + odometer + '\'' +
-                ", price=" + price +
-                '}';
+    public String encode() {
+        return new StringBuilder()
+                .append(this.getVin()).append("|")
+                .append(this.getYear()).append("|")
+                .append(this.getMake()).append("|")
+                .append(this.getModel()).append("|")
+                .append(this.getVehicleType()).append("|")
+                .append(this.getColor()).append("|")
+                .append(this.getOdometer()).append("|")
+                .append(this.getPrice()).toString();
     }
 }
